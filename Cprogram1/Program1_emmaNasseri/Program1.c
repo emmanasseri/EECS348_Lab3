@@ -100,22 +100,84 @@ void calculateAverageSales(float monthData[], int lengthOfList){
 }
 
 void displaySalesSummary(float monthData[]){
-	printf("\nSales summary:\n");
+	printf("\nSales summary:\n\n");
 	//calculate minimum sales
 	calculateMinimumSales(monthData, 12);
 	calculateMaximumSales(monthData, 12);
 	calculateAverageSales(monthData, 12);
+	printf("\n");
 }
+
 
 void displayMovingAverageReport(float monthData[]){
 	printf("\nSix-Month moving average report:\n\n");
+	
+	for (int i = 0; i < 7; i++){
+			if (i == 0){
+				printf("  January-June    ");
+			}
+			else if (i == 1){
+				printf("  February-July   ");
+			}
+			else if (i == 2){
+				printf("  March-August    ");
+			}
+			else if (i == 3){
+				printf("  April-September ");
+			}
+			else if (i == 4){
+				printf("  May-October     ");
+			}
+			else if (i == 5){
+				printf("  June-November   ");
+			}
+			else if (i == 6){
+				printf("  July-December   ");
+			}
+			float miniTotal = 0;
+			for (int j = i; j < i + 6; j++){
+				miniTotal += monthData[j];
+			}
+			printf("%.2f\n", miniTotal / 6);
+		}
+
 }
 
-void displayOrderedSalesReport(){
+void displayOrderedSalesReport(float monthData[], int listLength){
 
 	printf("\nSales report:\n\n");
 	
-}
+	printf("  Month        Sales\n");
+		float maxUsed = 0;
+		int useMax = 0;
+		int maxmonth = -1;
+		float maxAm = 0;
+		int sorting = 1;
+		while (sorting){
+			maxAm = 0;
+			maxmonth = -1;
+
+			for (int i = 0; i < listLength; i ++){
+				if (!useMax || monthData[i] < maxUsed){
+					//check if this is valid
+					if (maxmonth == -1 || monthData[i] > maxAm){
+						maxAm = monthData[i];
+						maxmonth = i;
+					}
+				}
+			}
+			if (maxmonth == -1){
+				sorting = 0;
+				break;
+			}
+			//print out data
+			printMonthName(maxmonth);
+			printf("%.2f\n", maxAm);
+			//data setup
+			useMax = 1;
+			maxUsed = maxAm;
+		}
+	}
 
 int main(){
 
@@ -135,7 +197,7 @@ int main(){
 	displayMonthlySalesReport(salesData, 12);
 	displaySalesSummary(salesData);
 	displayMovingAverageReport(salesData);
-	displayOrderedSalesReport();
+	displayOrderedSalesReport(salesData, 12);
 	
 
 	
