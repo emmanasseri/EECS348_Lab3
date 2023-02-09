@@ -33,7 +33,6 @@ void printMonthName(int monthNum){
 	else if (monthNum == 7){
 		printf("  August       ");
 	}
-	
 	else if (monthNum == 8){
 		printf("  September    ");
 	}
@@ -48,7 +47,8 @@ void printMonthName(int monthNum){
 	}
 }
 
-void displaySalesReport(float monthData[], int lengthOfList){
+void displayMonthlySalesReport(float monthData[], int lengthOfList){
+	printf("\nMonthly sales report for 2022:\n\n");
 	printf("  Month        Sales\n");
 	for(int i=0; i <lengthOfList; i++){
 		printMonthName(i);
@@ -58,25 +58,86 @@ void displaySalesReport(float monthData[], int lengthOfList){
 	
 }
 
+
+
+void calculateMinimumSales(float monthData[], int lengthOfList){
+	int minimumIndex = 0;
+	
+	
+	for(int i=0; i<lengthOfList;i++){
+		if(monthData[i] < monthData[minimumIndex]){
+			minimumIndex = i;
+		}
+	}
+	printf("  Minimum sales: %.2f (", monthData[minimumIndex]);
+	printMonthName(minimumIndex);
+	printf(")\n");
+
+}
+void calculateMaximumSales(float monthData[], int lengthOfList){
+
+	int maximumIndex = 0;
+		
+	for(int i=0; i<lengthOfList;i++){
+		if(monthData[i] > monthData[maximumIndex]){
+			maximumIndex = i;
+		}
+	}
+	printf("  Maximum sales: %.2f (", monthData[maximumIndex]);
+	printMonthName(maximumIndex);
+	printf(")\n");
+
+}
+
+void calculateAverageSales(float monthData[], int lengthOfList){
+	float sum = 0;
+	
+	for(int i=0; i<lengthOfList;i++){
+		sum += monthData[i];
+	}
+	printf("  Average sales: %.2f ", sum/lengthOfList);
+
+}
+
+void displaySalesSummary(float monthData[]){
+	printf("\nSales summary:\n");
+	//calculate minimum sales
+	calculateMinimumSales(monthData, 12);
+	calculateMaximumSales(monthData, 12);
+	calculateAverageSales(monthData, 12);
+}
+
+void displayMovingAverageReport(float monthData[]){
+	printf("\nSix-Month moving average report:\n\n");
+}
+
+void displayOrderedSalesReport(){
+
+	printf("\nSales report:\n\n");
+	
+}
+
 int main(){
 
 	FILE* inputFile;
 	//opens input file in read mode
 	inputFile = fopen("input.txt", "r");
 	float salesData[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+	const char monthArray[] = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
 
 	//reads input data from input.txt
 	for (int i = 0; i < 12; i++){
 		fscanf(inputFile, "%f", &salesData[i]);
 	}
 
-	printf("\nMonthly sales report for 2022:\n\n");
-	displaySalesReport(salesData, 12);
-	printf("\nSales summary\n\n");
-	
-	printf("\nSix-Month moving average report\n\n");
 
-	printf("\nSales report\n\n");
+	
+	displayMonthlySalesReport(salesData, 12);
+	displaySalesSummary(salesData);
+	displayMovingAverageReport(salesData);
+	displayOrderedSalesReport();
+	
+
 	
 	fclose(inputFile);
 	return 0;
